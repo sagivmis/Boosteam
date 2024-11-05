@@ -1,0 +1,55 @@
+.teams-container {
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  position: relative;
+}
+
+.team-container {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid white;
+  padding-block: 1em;
+
+  align-items: flex-start;
+}
+
+.team-container:last-child {
+  border: unset;
+}
+
+.team {
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+  color: white;
+  flex: 10;
+}
+
+h4.team-id {
+  color: white;
+  flex: 1;
+}
+
+button.content-copy-container {
+  border-radius: 10px;
+}
+
+button.content-copy-container:hover {
+  background-color: unset;
+  color: white;
+
+  transition: all 0.25s ease-in;
+}
+
+button.snapshot-btn {
+  inline-size: 2em;
+  border-radius: 4px;
+  margin: 0.25em;
+}
+
+button.snapshot-btn:hover {
+  background-color: unset;
+  color: white;
+  transition: all 0.25s ease-in;
+}

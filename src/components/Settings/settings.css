@@ -1,0 +1,72 @@
+div.settings-container {
+  max-width: unset;
+  inline-size: 60%;
+  block-size: 20%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #34495e;
+  padding-block: 1em;
+  padding-inline: 1em;
+}
+
+.setting-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  block-size: 3em;
+  inline-size: 40%;
+  position: relative;
+}
+
+.settings-list {
+  inline-size: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+h4.setting-title {
+  font-size: 1em;
+  display: flex;
+  margin: 0;
+
+  position: absolute;
+  left: 0em;
+  top: -1em;
+  padding: 6px 0px;
+  color: #ffe478;
+}
+
+h4.total-teams {
+  position: absolute;
+  right: 3em;
+  bottom: 0;
+  margin: 0;
+  font-size: 0.75em;
+}
+
+button.save-btn {
+  position: absolute;
+  right: 1%;
+  top: 3%;
+  color: white;
+  min-width: unset;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+button.save-btn:hover {
+  background-color: #5a7087;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}

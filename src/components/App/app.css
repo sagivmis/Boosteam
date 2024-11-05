@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  background-color: #2c3e50;
+  font-family: "Righteous", sans-serif !important;
+  color: #5a7087;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Righteous", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  color: #5a7087;
+}
+button:focus,
+button:focus-visible {
+  outline: none !important;
+}
+
+button {
+  font-family: "Righteous", sans-serif !important;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+}
+.app-container {
+  width: calc(100%);
+
+  padding-inline: 1em;
+  padding-block: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-maker-container {
+  position: relative;
+  background-color: #34495e;
+  padding-block: 0.25em;
+  padding-inline: 0.25em;
+  block-size: 100%;
+  inline-size: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+h3.logo {
+  font-size: 4em;
+}
+
+.flash-icon {
+  position: absolute;
+  width: 75px;
+  left: 215px;
+}
+
+.logo-container {
+  position: relative;
+  width: 700px;
+  block-size: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.players-input-container {
+  position: relative;
+  background-color: #34495e;
+  inline-size: 100%;
+  block-size: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.1em;
+}
+
+div.players-input {
+  position: relative;
+  border: 1px solid #5a7087;
+  inline-size: 100%;
+  border-radius: 4px;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease-in;
+}
+
+.tab-header {
+  block-size: 10%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button.full-width-btn {
+  position: absolute;
+  right: 0;
+  text-transform: uppercase;
+  inline-size: 100%;
+  font-size: 36px;
+  color: #5a7087;
+}
+
+.team-maker-container div.players-input-small {
+  position: relative;
+  align-self: center;
+  border: 1px solid #5a7087;
+  block-size: 20%;
+  inline-size: 20%;
+  border-radius: 4px;
+  margin: 0;
+
+  outline: none;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+  background-color: #5a7087;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  -webkit-transition: block-size 1s, inline-size 1s, margin 1s;
+  -moz-transition: block-size 1s, inline-size 1s, margin 1s;
+  -ms-transition: block-size 1s, inline-size 1s, margin 1s;
+  transition: block-size 1s, inline-size 1s, margin 1s;
+}
+
+.team-maker-container div.clicked {
+  position: absolute;
+  bottom: 0;
+  block-size: 100%;
+  inline-size: 100%;
+  /* animation: expandY 0.5s forwards, expandX 0.5s ease-out 0.5s forwards; */
+}
+
+img.flash-icon-generate-btn {
+  position: absolute;
+  width: 5em;
+  top: calc(50% - 2.5em);
+  left: calc(50% - 2.5em);
+}
+
+button.players-input-small.action--btn {
+  background-color: #5a7087;
+}
+
+img.avatar-img {
+  max-width: 6em;
+}
+
+button.settings-btn {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  color: white;
+  min-width: unset;
+  background-color: #34495e;
+}
+
+button.settings-btn:hover {
+  filter: brightness(1.1);
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+@keyframes expandY {
+  from {
+    block-size: 20%;
+  }
+
+  to {
+    block-size: 100%;
+  }
+}
+@keyframes expandX {
+  from {
+    inline-size: 20%;
+  }
+
+  to {
+    inline-size: 100%;
+  }
+}

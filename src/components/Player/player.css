@@ -1,0 +1,84 @@
+.player-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  block-size: 6.75em;
+  inline-size: 5.35em;
+
+  padding: 0.5em 1em;
+  background-color: #5a7087;
+  cursor: pointer;
+  transition: filter 0.2s ease-in;
+}
+
+.player-container:hover {
+  filter: brightness(1.085);
+  transition: filter 0.2s ease-out;
+}
+.player-info-container {
+  display: flex;
+  flex-direction: column;
+  block-size: 50%;
+  align-items: center;
+  z-index: 3;
+  color: #5a7087;
+}
+
+.flame-container {
+  position: absolute;
+  right: 5%;
+  top: 1%;
+}
+
+div.tier-chip-container {
+  position: absolute;
+  font-size: 0.55em;
+  left: 5%;
+  top: 3.5%;
+  block-size: 2em;
+  inline-size: 2em;
+}
+
+span.tier-chip-label {
+  padding: 0;
+}
+
+div.role-chip-container {
+  position: absolute;
+  font-size: 0.55em;
+  bottom: 3.5%;
+  block-size: 2em;
+  inline-size: 6em;
+  font-size: 0.75em;
+  text-transform: uppercase;
+}
+
+span.role-chip-label {
+  padding: 0;
+  font-size: 2em;
+}
+
+span.player-checkbox {
+  position: absolute;
+  padding: 0;
+  left: 0;
+  top: 0;
+}
+
+.player-container img.avatar-img {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  max-width: unset;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0.1;
+}
+
+.player-name {
+  z-index: 5;
+  color: white;
+}

@@ -1,0 +1,114 @@
+div.team-selection-form {
+  inline-size: 100%;
+  block-size: 90%;
+}
+.team-selection-header {
+  position: relative;
+  inline-size: 100%;
+  block-size: 15%;
+  display: flex;
+  flex-direction: row;
+}
+
+.team-selection-body {
+  position: relative;
+  block-size: 85%;
+  /* max-block-size: 100%; */
+}
+
+.new-player-container {
+  block-size: 100%;
+  inline-size: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.25em;
+}
+
+input.name-input {
+  padding: 0;
+  padding-inline: 0.5em;
+  padding-block: 0.25em;
+  font-size: 1em;
+  font-weight: 300;
+  font-style: normal;
+  font-family: "Righteous", sans-serif !important;
+  color: #1b2f42;
+}
+
+div.select {
+  font-family: "Righteous", sans-serif;
+  text-transform: uppercase;
+  color: #1b2f42;
+  fill: #1b2f42;
+}
+div.role-select {
+  inline-size: 30%;
+}
+
+div.tier-select {
+  inline-size: 10%;
+  /* padding: 0; */
+}
+div.role-select.select div.role-select-view,
+div.tier-select.select div.tier-select-view {
+  padding: 0;
+  padding-inline: 0.5em;
+  padding-block: 0.25em;
+}
+
+li.menu-item {
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+}
+svg.tier-select-icon,
+svg.role-select-icon {
+  fill: #1b2f42;
+}
+
+svg.checkbox-icon {
+  fill: #5a7087;
+}
+
+.all-team-container {
+  block-size: 100%;
+
+  /* justify-content: center; */
+  /* justify-content: space-between; */
+}
+
+.players-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1em;
+  overflow-y: auto;
+  max-block-size: 100%;
+  color: #fff;
+  letter-spacing: 0.125em;
+  justify-content: center;
+  /* font-size: 1.25em; */
+}
+
+div.select.Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+}
+
+@keyframes expandX {
+  from {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 20%;
+  }
+  to {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
