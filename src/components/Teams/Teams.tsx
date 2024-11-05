@@ -20,7 +20,6 @@ const Teams = () => {
   }, []);
 
   const handleCopyImage = useCallback(() => {
-    console.log(image);
     copyImg(image);
     clear();
   }, [image]);

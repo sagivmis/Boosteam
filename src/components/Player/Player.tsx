@@ -19,14 +19,11 @@ const Player = (props: IPlayer) => {
   const [isChecked, setIsChecked] = useState(player.checked);
 
   const { handleToggleCheckPlayer, teams } = usePlayersContext();
-  const handleCheckPlayer = () => {
-    // setIsChecked((prevCheck) => !prevCheck);
-    // handleToggleCheckPlayer(player.id);
-  };
 
-  useEffect(() => {
-    console.log(teams);
-  }, [teams]);
+  const handleCheckPlayer = () => {
+    setIsChecked((prevCheck) => !prevCheck);
+    handleToggleCheckPlayer(player.id);
+  };
 
   return (
     <div className="player-container" onClick={handleCheckPlayer}>
