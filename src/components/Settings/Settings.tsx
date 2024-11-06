@@ -77,6 +77,7 @@ const Settings = (props: ISettings) => {
         handleLoadTeams(data.players, data.teams);
         console.log(data.settings);
         handleLoadSettings(data.settings);
+        onClose();
       });
     }
   };
@@ -85,6 +86,19 @@ const Settings = (props: ISettings) => {
     () => players.length / maxPlayers,
     [players, maxPlayers]
   );
+
+  const genMinDisabledSelections = (length: number, reverse = false) => {
+    return Array.from(
+      {
+        length,
+      },
+      (v, i) => (!reverse ? i : length - i)
+    );
+  };
+
+  const genMaxDisabledSelections = (length: number) => {
+    return Array.from({ length: 10 }, (v, i) => (i >= length ? i + 1 : -1));
+  };
 
   return (
     <Dialog
@@ -99,24 +113,16 @@ const Settings = (props: ISettings) => {
             <h4 className="setting-title">{setting.label}</h4>
             <RatingButtonGroup
               selected={setting.selectedSetting}
-              max={
-                ["min dps players", "min support players"].includes(
-                  setting.label
-                )
-                  ? 5
-                  : undefined
-              }
+              // max={}
               disableSelections={
                 setting.label === "max players"
-                  ? Array.from(
-                      {
-                        length: calcMinMaxPlayers(
-                          minDpsPlayers,
-                          minSupportPlayers
-                        ),
-                      },
-                      (v, i) => i
+                  ? genMinDisabledSelections(
+                      calcMinMaxPlayers(minDpsPlayers, minSupportPlayers)
                     )
+                  : setting.label === "min dps players"
+                  ? genMaxDisabledSelections(maxPlayers - minSupportPlayers)
+                  : setting.label === "min support players"
+                  ? genMaxDisabledSelections(maxPlayers - minDpsPlayers)
                   : undefined
               }
               onClick={(value) => {

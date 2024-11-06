@@ -12,6 +12,7 @@ interface IRatingButtonGroup {
 
 const RatingButtonGroup = (props: IRatingButtonGroup) => {
   const { selected, onClick, disableSelections, max = 10 } = props;
+  console.log(disableSelections);
 
   return (
     <div className="rating-button-group-container">

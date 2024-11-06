@@ -1,8 +1,5 @@
 import {
-  Avatar,
   Button,
-  FormControl,
-  Icon,
   IconButton,
   MenuItem,
   Select,
@@ -11,14 +8,7 @@ import {
 } from "@mui/material";
 import "./all-players.css";
 import { ChangeEvent, useCallback, useState } from "react";
-import {
-  dummyPlayers,
-  roles,
-  tiers,
-  type PlayerRole,
-  type PlayerTier,
-  type SelectablePlayer,
-} from "../../util";
+import { roles, tiers, type PlayerRole, type PlayerTier } from "../../util";
 import CheckBox from "@mui/icons-material/CheckBox";
 import Player from "../Player";
 import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
@@ -82,6 +72,11 @@ const AllPlayers = () => {
               slotProps={{ htmlInput: { className: "name-input" } }}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setName(event.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  createNewPlayer();
+                }
               }}
             />
 

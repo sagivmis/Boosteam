@@ -4,14 +4,11 @@ import AllPlayers from "../AllPlayers";
 import { flash } from "../../assets";
 import { Button, createTheme, IconButton, ThemeProvider } from "@mui/material";
 import clsx from "clsx";
-import TeamRequirements from "../TeamRequirements";
 import { Settings as SettingsIcon } from "@mui/icons-material";
 import Settings from "../Settings";
 import { SettingsProvider, PlayersProvider } from "../../providers";
-import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
 import Teams from "../Teams";
-import { useScreenshot } from "use-screenshot-hook";
-import { copyImg } from "../../util";
+import Back from "@mui/icons-material/ArrowBackRounded";
 
 const theme = createTheme({
   palette: {
@@ -42,6 +39,8 @@ function App() {
     setIsSettingsOpen(false);
   };
 
+  const handleStopGenerating = () => setIsGenerating(false);
+
   return (
     <ThemeProvider theme={theme}>
       <SettingsProvider>
@@ -49,7 +48,17 @@ function App() {
           <div className="app-container">
             <Settings open={isSettingsOpen} onClose={handleCloseSettings} />
 
-            <Button className="settings-btn" onClick={handleOpenSettings}>
+            <Button
+              className="header-btn back-btn"
+              onClick={handleStopGenerating}
+            >
+              <Back />
+            </Button>
+
+            <Button
+              className="header-btn settings-btn"
+              onClick={handleOpenSettings}
+            >
               <SettingsIcon />
             </Button>
             <div className="logo-container">

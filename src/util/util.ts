@@ -68,7 +68,10 @@ export const createTeams = (
     let altCount = 0;
     while (team.length < maxPlayers && altCount < altPlayers.length) {
       const player = altPlayers[altCount];
-      if (availablePlayers.includes(player)) {
+      if (
+        availablePlayers.includes(player) &&
+        !team.find((teamPlayer) => teamPlayer.name === player.name)
+      ) {
         team.push(player);
         availablePlayers.splice(availablePlayers.indexOf(player), 1);
       }
@@ -167,11 +170,11 @@ export const genTeamString = (
   let playerStr = team
     .map(
       (player, index) =>
-        `${index}. ${player.name} ${player.role === "alt" ? "- ALT" : ""}`
+        `${index + 1}. ${player.name} ${player.role === "alt" ? "- ALT" : ""}`
     )
     .join("\n\t");
 
-  return `Team ${teamId}: \n\t${playerStr}`;
+  return `Team ${teamId + 1}: \n\t${playerStr}`;
 };
 
 export const copyImg = async (src: string | undefined) => {
