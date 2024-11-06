@@ -7,26 +7,29 @@ import {
   tierColorMapping,
 } from "../../util";
 import "./player.css";
-import { Checkbox, Chip } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Checkbox, Chip, Menu, MenuItem } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
+import { useOnClickOutside } from "../../hooks";
 
 interface IPlayer {
   player: SelectablePlayer;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 const Player = (props: IPlayer) => {
-  const { player } = props;
+  const { player, onClick } = props;
+  const menuRef = useRef(null);
   const [isChecked, setIsChecked] = useState(player.checked);
 
   const { handleToggleCheckPlayer, teams } = usePlayersContext();
 
-  const handleCheckPlayer = () => {
+  const handleCheckPlayer = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsChecked((prevCheck) => !prevCheck);
     handleToggleCheckPlayer(player.id);
   };
 
   return (
-    <div className="player-container" onClick={handleCheckPlayer}>
+    <div className="player-container" onClick={onClick}>
       {/* <Checkbox
         checked={isChecked}
         onChange={handleCheckPlayer}

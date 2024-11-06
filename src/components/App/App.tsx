@@ -48,12 +48,14 @@ function App() {
           <div className="app-container">
             <Settings open={isSettingsOpen} onClose={handleCloseSettings} />
 
-            <Button
-              className="header-btn back-btn"
-              onClick={handleStopGenerating}
-            >
-              <Back />
-            </Button>
+            {isGenerating && (
+              <Button
+                className="header-btn back-btn"
+                onClick={handleStopGenerating}
+              >
+                <Back />
+              </Button>
+            )}
 
             <Button
               className="header-btn settings-btn"
