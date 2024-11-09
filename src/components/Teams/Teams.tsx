@@ -3,19 +3,30 @@ import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvid
 import Player from "../Player";
 import "./teams.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { copyImg, genTeamString } from "../../util";
+import { copyImg, genTeamString, TeamID } from "../../util";
 import ContentCopy from "@mui/icons-material/ContentCopyRounded";
 import useScreenshot from "use-screenshot-hook";
 import Camera from "@mui/icons-material/CameraAltRounded";
 import { useCallback, useEffect, useRef, useState } from "react";
+import DeletePlayer from "../Player/DeletePlayer";
+import SwapTeam from "../Player/SwapTeam";
 
 const Teams = () => {
   const [showTeams, setShowTeams] = useState(false);
 
-  const { teams } = usePlayersContext();
+  const {
+    teams,
+    handleSelectPlayer,
+    selectedPlayerId,
+    handleAssignTeam,
+    handleRemovePlayers,
+  } = usePlayersContext();
   const teamsRef = useRef<HTMLDivElement>(null);
 
   const { image, takeScreenshot, clear } = useScreenshot({ ref: teamsRef });
+
+  const [deletePlayerOpen, setDeletePlayerOpen] = useState(false);
+  const [swapTeamOpen, setSwapTeamOpen] = useState(false);
 
   const handleScreenshot = useCallback(async () => {
     takeScreenshot();
@@ -25,6 +36,33 @@ const Teams = () => {
     copyImg(image);
     clear();
   }, [image]);
+
+  const handleSwapTeam = (teamId: TeamID) => {
+    handleAssignTeam(selectedPlayerId, teamId);
+  };
+
+  const handleOpenDeletePlayer = () => {
+    setDeletePlayerOpen(true);
+  };
+  const handleCloseDeletePlayer = () => {
+    setDeletePlayerOpen(false);
+  };
+
+  const handleOpenSwapTeam = () => {
+    setSwapTeamOpen(true);
+  };
+  const handleCloseSwapTeam = () => {
+    setSwapTeamOpen(false);
+  };
+
+  const handleDeletePlayer = (playerId: string) => {
+    handleRemovePlayers([playerId]);
+    handleCloseDeletePlayer();
+  };
+
+  const handleClickPlayer = (playerId: string) => {
+    handleSelectPlayer(playerId);
+  };
 
   useEffect(() => {
     handleCopyImage();
@@ -42,6 +80,20 @@ const Teams = () => {
         <Camera />
       </IconButton>
       <div className="teams" ref={teamsRef}>
+        <DeletePlayer
+          playerId={selectedPlayerId}
+          open={deletePlayerOpen}
+          handleClose={handleCloseDeletePlayer}
+          handleDeletePlayer={handleDeletePlayer}
+          handleOpen={handleOpenDeletePlayer}
+        />
+        <SwapTeam
+          playerId={selectedPlayerId}
+          open={swapTeamOpen}
+          handleClose={handleCloseSwapTeam}
+          handleSwapTeam={handleSwapTeam}
+          handleOpen={handleOpenSwapTeam}
+        />
         {showTeams &&
           Object.values(teams).map((team, index) => {
             return (
@@ -49,7 +101,13 @@ const Teams = () => {
                 <h4 className="team-id">Team {index + 1}:</h4>
                 <div className="team">
                   {team.map((player) => (
-                    <Player player={player} />
+                    <Player
+                      player={player}
+                      key={player.id}
+                      onClick={() => handleClickPlayer(player.id)}
+                      onClickDelete={() => handleOpenDeletePlayer()}
+                      onClickSwap={() => handleOpenSwapTeam()}
+                    />
                   ))}
                 </div>
                 <CopyToClipboard

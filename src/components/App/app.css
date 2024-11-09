@@ -137,7 +137,7 @@ button.full-width-btn {
   transition: block-size 1s, inline-size 1s, margin 1s;
 }
 
-.team-maker-container div.clicked {
+.team-maker-container .generate-team-container.clicked {
   position: absolute;
   bottom: 0;
   block-size: 100%;

@@ -3,32 +3,44 @@ import {
   createTeams,
   PlayerType,
   ProviderProps,
-  SelectablePlayer,
+  Teams,
+  TeamPlayer,
+  TeamID,
 } from "../../util";
 
 import { v4 as uuid } from "uuid";
 import { useSettingsContext } from "../SettingsProvider/SettingsProvider";
 
 interface IPlayersContext {
-  players: SelectablePlayer[];
-  teams: Record<number, SelectablePlayer[]>;
+  players: TeamPlayer[];
+  teams: Record<number, TeamPlayer[]>;
+  selectedPlayerId: string;
   handleAddPlayer: (player: Omit<PlayerType, "id">) => void;
   handleRemovePlayers: (playerIds: string[]) => void;
   handleLoadTeams: (
-    loadedPlayers: SelectablePlayer[],
-    loadedTeams: Record<number, SelectablePlayer[]>
+    loadedPlayers: TeamPlayer[],
+    loadedTeams: Record<number, TeamPlayer[]>
   ) => void;
 
   handleToggleCheckPlayer: (playerId: string) => void;
+  getPlayerById: (playerId: string) => TeamPlayer | undefined;
+  handleAssignTeam: (playerId: string, teamId: TeamID) => void;
+  handleSelectPlayer: (playerId: string) => void;
 }
 
 const defaultPlayersContext: IPlayersContext = {
   players: [],
   teams: [],
+  selectedPlayerId: "",
   handleAddPlayer: () => {},
   handleRemovePlayers: () => {},
   handleLoadTeams: () => {},
   handleToggleCheckPlayer: () => {},
+  getPlayerById: () => {
+    return undefined;
+  },
+  handleAssignTeam: () => {},
+  handleSelectPlayer: () => {},
 };
 
 const PlayersContext = createContext<IPlayersContext>(defaultPlayersContext);
@@ -36,13 +48,11 @@ const PlayersContext = createContext<IPlayersContext>(defaultPlayersContext);
 export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
   const { maxPlayers, minDpsPlayers, minSupportPlayers } = useSettingsContext();
 
-  const [players, setPlayers] = useState<SelectablePlayer[]>([]);
-  const [teams, setTeams] = useState<Record<number, SelectablePlayer[]>>([]);
+  const [players, setPlayers] = useState<TeamPlayer[]>([]);
+  const [teams, setTeams] = useState<Teams>([]);
+  const [selectedPlayerId, setSelectedPlayerId] = useState("");
 
-  const handleLoadTeams = (
-    loadedPlayers: SelectablePlayer[],
-    loadedTeams: Record<number, SelectablePlayer[]>
-  ) => {
+  const handleLoadTeams = (loadedPlayers: TeamPlayer[], loadedTeams: Teams) => {
     setPlayers(loadedPlayers);
     setTeams(loadedTeams);
   };
@@ -53,8 +63,11 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
     );
   }, [players, minDpsPlayers, maxPlayers, minSupportPlayers]);
 
+  const handleSelectPlayer = (playerId: string) =>
+    setSelectedPlayerId(playerId);
+
   const handleAddPlayer = (player: Omit<PlayerType, "id">) => {
-    const newPlayer: SelectablePlayer = {
+    const newPlayer: TeamPlayer = {
       ...player,
       id: uuid(),
       checked: true,
@@ -65,7 +78,7 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
 
   const handleRemovePlayers = (playerIds: string[]) => {
     setPlayers((prevPlayers) =>
-      prevPlayers.filter((player) => playerIds.includes(player.id))
+      prevPlayers.filter((player) => !playerIds.includes(player.id))
     );
   };
 
@@ -79,6 +92,18 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
     );
   };
 
+  const handleAssignTeam = (playerId: string, teamId: TeamID) => {
+    setPlayers((prevPlayers) =>
+      prevPlayers.map((player) =>
+        player.id === playerId ? { ...player, assignedTeamId: teamId } : player
+      )
+    );
+  };
+
+  const getPlayerById = (playerId: string) => {
+    return players.find((player) => player.id === playerId);
+  };
+
   const providerMemo = useMemo<IPlayersContext>(
     () => ({
       players,
@@ -87,6 +112,10 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
       handleRemovePlayers,
       handleLoadTeams,
       handleToggleCheckPlayer,
+      getPlayerById,
+      handleAssignTeam,
+      handleSelectPlayer,
+      selectedPlayerId,
     }),
     [players, handleAddPlayer, handleRemovePlayers]
   );

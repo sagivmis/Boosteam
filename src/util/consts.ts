@@ -3,7 +3,7 @@ import {
   PlayerTier,
   PlayerTierDecimal,
   Requirement,
-  SelectablePlayer,
+  TeamPlayer,
 } from "./types";
 
 export const tiers: PlayerTier[] = ["S", "A", "B", "C", "D"];
@@ -87,7 +87,7 @@ export const tierByRoleColorMapping: Record<
   },
 };
 
-export const dummyPlayers: SelectablePlayer[] = [
+export const dummyPlayers: TeamPlayer[] = [
   {
     id: "1",
     name: "Tiri",

@@ -9,39 +9,63 @@ import {
 } from "@mui/material";
 import "./all-players.css";
 import { ChangeEvent, useCallback, useState } from "react";
-import { roles, tiers, type PlayerRole, type PlayerTier } from "../../util";
+import {
+  roles,
+  TeamID,
+  tiers,
+  type PlayerRole,
+  type PlayerTier,
+} from "../../util";
 import CheckBox from "@mui/icons-material/CheckBox";
 import Player from "../Player";
 import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
 import { v4 as uuid } from "uuid";
 import DeletePlayer from "../Player/DeletePlayer";
+import SwapTeam from "../Player/SwapTeam";
 
 const AllPlayers = () => {
-  const { players, handleAddPlayer, handleRemovePlayers } = usePlayersContext();
+  const {
+    players,
+    handleAddPlayer,
+    handleRemovePlayers,
+    handleAssignTeam,
+    selectedPlayerId,
+    handleSelectPlayer,
+  } = usePlayersContext();
 
   const [isCreating, setIsCreating] = useState(false);
-  const [playerMenuAnchorEl, setAnchorEl] = useState<undefined | HTMLElement>();
-  const open = Boolean(playerMenuAnchorEl);
 
   const [tier, setTier] = useState<PlayerTier>("S");
   const [role, setRole] = useState<PlayerRole>("dps");
   const [name, setName] = useState<string>("");
 
-  const [selectedPlayerId, setSelectedPlayerId] = useState("");
   const [deletePlayerOpen, setDeletePlayerOpen] = useState(false);
+  const [swapTeamOpen, setSwapTeamOpen] = useState(false);
+
+  const handleSwapTeam = (teamId: TeamID) => {
+    handleAssignTeam(selectedPlayerId, teamId);
+  };
 
   const handleOpenDeletePlayer = () => {
     setDeletePlayerOpen(true);
   };
-
   const handleCloseDeletePlayer = () => {
     setDeletePlayerOpen(false);
+  };
+
+  const handleOpenSwapTeam = () => {
+    setSwapTeamOpen(true);
+  };
+  const handleCloseSwapTeam = () => {
+    setSwapTeamOpen(false);
   };
 
   const handleDeletePlayer = (playerId: string) => {
     handleRemovePlayers([playerId]);
     handleCloseDeletePlayer();
-    handleClosePlayerMenu();
+  };
+  const handleClickPlayer = (playerId: string) => {
+    handleSelectPlayer(playerId);
   };
 
   const resetPlayer = () => {
@@ -62,14 +86,6 @@ const AllPlayers = () => {
   };
   const handleChangeTier = (event: SelectChangeEvent) => {
     setTier(event.target.value as PlayerTier);
-  };
-
-  const handleClickPlayerMenu = (event: React.MouseEvent<HTMLDivElement>) => {
-    // setSelectedPlayerId()
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClosePlayerMenu = () => {
-    setAnchorEl(undefined);
   };
 
   return (
@@ -170,36 +186,28 @@ const AllPlayers = () => {
         <div className="team-selection-body">
           <div className="all-team-container">
             <div className="players-list">
-              <Menu
-                id="basic-menu"
-                anchorEl={playerMenuAnchorEl}
-                open={open}
-                onClose={handleClosePlayerMenu}
-                // ref={menuRef}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "center",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem onClick={handleClosePlayerMenu}>Delete</MenuItem>
-              </Menu>
               {players.map((player) => (
                 <>
                   <DeletePlayer
-                    playerId={player.id}
+                    playerId={selectedPlayerId}
                     open={deletePlayerOpen}
                     handleClose={handleCloseDeletePlayer}
                     handleDeletePlayer={handleDeletePlayer}
                     handleOpen={handleOpenDeletePlayer}
                   />
+                  <SwapTeam
+                    playerId={selectedPlayerId}
+                    open={swapTeamOpen}
+                    handleClose={handleCloseSwapTeam}
+                    handleSwapTeam={handleSwapTeam}
+                    handleOpen={handleOpenSwapTeam}
+                  />
                   <Player
                     player={player}
                     key={player.id}
-                    onClick={handleClickPlayerMenu}
+                    onClick={() => handleClickPlayer(player.id)}
+                    onClickDelete={() => handleOpenDeletePlayer()}
+                    onClickSwap={() => handleOpenSwapTeam()}
                   />
                 </>
               ))}

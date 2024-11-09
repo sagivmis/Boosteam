@@ -1,4 +1,4 @@
-div.delete-player-container {
+div.swap-team-container {
   /* max-width: unset; */
   padding: 1em;
   inline-size: 50%;
@@ -11,11 +11,11 @@ div.delete-player-container {
   /* 12px -12px 5px 1px rgba(0, 0, 0, 0.025); */
 }
 
-div.delete-player-actions {
+div.swap-team-actions {
   padding: 0;
 }
 
-button.delete-player-action-btn {
+button.swap-team-action-btn {
   min-width: 2em;
   line-height: 1em;
 }

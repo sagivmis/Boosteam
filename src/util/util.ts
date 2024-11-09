@@ -1,15 +1,15 @@
 import { tiersOrder } from "./consts";
-import { SelectablePlayer, SettingsData } from "./types";
+import { TeamPlayer, SettingsData } from "./types";
 import { saveAs } from "file-saver";
 
 export const createTeams = (
-  players: SelectablePlayer[],
+  players: TeamPlayer[],
   {
     maxPlayers,
     minDpsPlayers,
     minSupportPlayers,
   }: { maxPlayers: number; minDpsPlayers: number; minSupportPlayers: number }
-): Record<number, SelectablePlayer[]> => {
+): Record<number, TeamPlayer[]> => {
   const availablePlayers = [...players];
   const dpsPlayers = availablePlayers
     .filter((p) => p.role === "dps" && p.tier === "S")
@@ -21,7 +21,7 @@ export const createTeams = (
     .filter((p) => p.role === "alt")
     .sort((a, b) => tiersOrder[b.tier] - tiersOrder[a.tier]);
 
-  const generatedTeams: Record<number, SelectablePlayer[]> = {};
+  const generatedTeams: Record<number, TeamPlayer[]> = {};
 
   const numberOfTeams = Math.ceil(availablePlayers.length / maxPlayers);
 
@@ -29,12 +29,24 @@ export const createTeams = (
     generatedTeams[i] = [];
   }
 
+  // Assign players to their selected teams if assignedTeamId is provided
+  for (const player of players) {
+    if (
+      player.assignedTeamId !== undefined &&
+      player.assignedTeamId in generatedTeams
+    ) {
+      generatedTeams[player.assignedTeamId].push(player);
+      availablePlayers.splice(availablePlayers.indexOf(player), 1);
+    }
+  }
+
   let teamId = 0;
   while (availablePlayers.length > 0 && teamId < numberOfTeams) {
-    const team: SelectablePlayer[] = [];
+    const team: TeamPlayer[] = generatedTeams[teamId];
 
     // Add DPS players
-    let dpsCount = 0;
+    // let dpsCount = 0;
+    let dpsCount = team.filter((p) => p.role === "dps").length;
     for (const player of dpsPlayers) {
       if (availablePlayers.includes(player) && dpsCount < minDpsPlayers) {
         team.push(player);
@@ -48,7 +60,9 @@ export const createTeams = (
     }
 
     // Add Support players
-    let supportCount = 0;
+    // let supportCount = 0;
+    let supportCount = team.filter((p) => p.role === "support").length;
+
     for (const player of supportPlayers) {
       if (
         availablePlayers.includes(player) &&
@@ -106,11 +120,11 @@ export const createTeams = (
 };
 
 export const saveTeamsToFile = (
-  players: SelectablePlayer[],
-  teams: Record<number, SelectablePlayer[]>,
+  players: TeamPlayer[],
+  teams: Record<number, TeamPlayer[]>,
   settings: SettingsData
 ) => {
-  const teamsArray: SelectablePlayer[] = Object.values(teams).flat();
+  const teamsArray: TeamPlayer[] = Object.values(teams).flat();
 
   const data = {
     players,
@@ -127,8 +141,8 @@ export const saveTeamsToFile = (
 export const loadTeamsFromFile = (
   file: File,
   onLoad: (data: {
-    players: SelectablePlayer[];
-    teams: Record<number, SelectablePlayer[]>;
+    players: TeamPlayer[];
+    teams: Record<number, TeamPlayer[]>;
     settings: SettingsData;
   }) => void
 ) => {
@@ -137,9 +151,9 @@ export const loadTeamsFromFile = (
     if (event.target && event.target.result) {
       const data = JSON.parse(event.target.result as string);
 
-      // Convert teams array back to Record<number, SelectablePlayer[]>
-      const teamsRecord: Record<number, SelectablePlayer[]> = {};
-      const teamsArray: SelectablePlayer[] = data.teams;
+      // Convert teams array back to Record<number, TeamPlayer[]>
+      const teamsRecord: Record<number, TeamPlayer[]> = {};
+      const teamsArray: TeamPlayer[] = data.teams;
       let teamIndex = 0;
       let teamSize = Math.ceil(
         teamsArray.length / Object.keys(data.teams).length
@@ -163,10 +177,7 @@ export const calcMinMaxPlayers = (minDps: number, minSupport: number) => {
   return minDps + minSupport;
 };
 
-export const genTeamString = (
-  team: SelectablePlayer[],
-  teamId: number
-): string => {
+export const genTeamString = (team: TeamPlayer[], teamId: number): string => {
   let playerStr = team
     .map(
       (player, index) =>

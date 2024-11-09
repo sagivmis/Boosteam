@@ -9,7 +9,15 @@ export type PlayerType = {
   tier: PlayerTier | PlayerTierDecimal;
   role: PlayerRole;
 };
-export type SelectablePlayer = PlayerType & { checked: boolean };
+export type TeamPlayer = PlayerType & {
+  checked: boolean;
+  assignedTeamId?: TeamID;
+};
+
+export type TeamID = number;
+
+export type Teams = Record<TeamID, TeamPlayer[]>;
+
 export type Requirement = {
   label: string;
   callback: (event: React.MouseEvent<HTMLButtonElement>) => string[];
