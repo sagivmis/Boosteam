@@ -71,7 +71,8 @@
   top: 1%;
 }
 
-div.tier-chip-container {
+div.tier-chip-container,
+div.selected-team-chip-container {
   position: absolute;
   font-size: 0.55em;
   left: 5%;
@@ -80,7 +81,8 @@ div.tier-chip-container {
   inline-size: 2em;
 }
 
-span.tier-chip-label {
+span.tier-chip-label,
+span.selected-team-label {
   padding: 0;
 }
 

@@ -84,9 +84,9 @@ const Player = (props: IPlayer) => {
         {player.assignedTeamId && (
           <Chip
             label={`${parseInt(player.assignedTeamId.toString()) + 1}`}
-            className="tier-chip-container"
-            classes={{ label: "tier-chip-label" }}
-            color={tierByRoleColorMapping[player.role][player.tier] as any}
+            className="selected-team-chip-container"
+            classes={{ label: "selected-team-label" }}
+            // color={tierByRoleColorMapping[player.role][player.tier] as any}
           />
         )}
         <Chip
