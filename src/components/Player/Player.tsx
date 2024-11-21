@@ -14,15 +14,17 @@ import { useOnClickOutside } from "../../hooks";
 import clsx from "clsx";
 import Delete from "@mui/icons-material/Delete";
 import Swap from "@mui/icons-material/SwapHoriz";
+import Restart from "@mui/icons-material/RestartAlt";
 
 interface IPlayer {
   player: TeamPlayer;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   onClickDelete?: () => void;
   onClickSwap?: () => void;
+  onClickRestart?: () => void;
 }
 const Player = (props: IPlayer) => {
-  const { player, onClick, onClickDelete, onClickSwap } = props;
+  const { player, onClick, onClickDelete, onClickSwap, onClickRestart } = props;
   const playerContainerRef = useRef(null);
   const [isChecked, setIsChecked] = useState(player.checked);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
@@ -66,6 +68,12 @@ const Player = (props: IPlayer) => {
         <IconButton className="swap-team-btn toolbar-btn" onClick={onClickSwap}>
           <Swap className="swap-icon toolbar-icon" />
         </IconButton>
+        <IconButton
+          className="restart-team-btn toolbar-btn"
+          onClick={onClickRestart}
+        >
+          <Restart className="restart-icon toolbar-icon" />
+        </IconButton>
       </div>
       {player.tier === "S" &&
         (player.role === "dps" || player.role === "support") && (
@@ -81,14 +89,14 @@ const Player = (props: IPlayer) => {
           classes={{ label: "tier-chip-label" }}
           color={tierByRoleColorMapping[player.role][player.tier] as any}
         /> */}
-        {player.assignedTeamId && (
+        {player.assignedTeamId ? (
           <Chip
             label={`${parseInt(player.assignedTeamId.toString()) + 1}`}
             className="selected-team-chip-container"
             classes={{ label: "selected-team-label" }}
             // color={tierByRoleColorMapping[player.role][player.tier] as any}
           />
-        )}
+        ) : undefined}
         <Chip
           label={`${player.role}`}
           className="role-chip-container"

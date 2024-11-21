@@ -10,6 +10,7 @@ import Camera from "@mui/icons-material/CameraAltRounded";
 import { useCallback, useEffect, useRef, useState } from "react";
 import DeletePlayer from "../Player/DeletePlayer";
 import SwapTeam from "../Player/SwapTeam";
+import domToImage from "dom-to-image";
 
 const Teams = () => {
   const [showTeams, setShowTeams] = useState(false);
@@ -20,6 +21,7 @@ const Teams = () => {
     selectedPlayerId,
     handleAssignTeam,
     handleRemovePlayers,
+    handleResetPlayer,
   } = usePlayersContext();
   const teamsRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +31,18 @@ const Teams = () => {
   const [swapTeamOpen, setSwapTeamOpen] = useState(false);
 
   const handleScreenshot = useCallback(async () => {
-    takeScreenshot();
+    // takeScreenshot().then(() => handleCopyImage());
+    if (teamsRef.current) {
+      domToImage.toPng(teamsRef.current, { quality: 1 }).then((dataUrl) => {
+        // const imgData = canvas.toDataURL("image/png");
+        console.log(dataUrl);
+        copyImg(dataUrl);
+      });
+      // const link = document.createElement("a");
+      // link.href = imgData;
+      // link.download = "screenshot.png";
+      // link.click();
+    }
   }, []);
 
   const handleCopyImage = useCallback(() => {
@@ -64,9 +77,9 @@ const Teams = () => {
     handleSelectPlayer(playerId);
   };
 
-  useEffect(() => {
-    handleCopyImage();
-  }, [image]);
+  // useEffect(() => {
+  //   handleCopyImage();
+  // }, [image]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowTeams(true), 700);
@@ -107,6 +120,7 @@ const Teams = () => {
                       onClick={() => handleClickPlayer(player.id)}
                       onClickDelete={() => handleOpenDeletePlayer()}
                       onClickSwap={() => handleOpenSwapTeam()}
+                      onClickRestart={() => handleResetPlayer(player.id)}
                     />
                   ))}
                 </div>

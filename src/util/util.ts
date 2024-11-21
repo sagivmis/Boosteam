@@ -8,7 +8,13 @@ export const createTeams = (
     maxPlayers,
     minDpsPlayers,
     minSupportPlayers,
-  }: { maxPlayers: number; minDpsPlayers: number; minSupportPlayers: number }
+    syncSwaps,
+  }: {
+    maxPlayers: number;
+    minDpsPlayers: number;
+    minSupportPlayers: number;
+    syncSwaps: boolean;
+  }
 ): Record<number, TeamPlayer[]> => {
   const availablePlayers = [...players];
   const dpsPlayers = availablePlayers
@@ -46,7 +52,7 @@ export const createTeams = (
 
     // Add DPS players
     // let dpsCount = 0;
-    let dpsCount = team.filter((p) => p.role === "dps").length;
+    let dpsCount = syncSwaps ? team.filter((p) => p.role === "dps").length : 0;
     for (const player of dpsPlayers) {
       if (availablePlayers.includes(player) && dpsCount < minDpsPlayers) {
         team.push(player);
@@ -61,7 +67,9 @@ export const createTeams = (
 
     // Add Support players
     // let supportCount = 0;
-    let supportCount = team.filter((p) => p.role === "support").length;
+    let supportCount = syncSwaps
+      ? team.filter((p) => p.role === "support").length
+      : 0;
 
     for (const player of supportPlayers) {
       if (

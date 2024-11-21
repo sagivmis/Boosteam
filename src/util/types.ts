@@ -31,4 +31,5 @@ export type SettingsData = {
   maxPlayers: number;
   minSupportPlayers: number;
   minDpsPlayers: number;
+  syncSwaps: boolean;
 };

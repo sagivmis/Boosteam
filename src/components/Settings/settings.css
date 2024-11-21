@@ -53,20 +53,50 @@ h4.total-teams {
   font-size: 0.75em;
 }
 
-button.save-btn {
+.settings-actions-container {
   position: absolute;
   right: 1%;
   top: 3%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  /* block-size: 3em; */
+  gap: 0.3em;
+}
+
+button.download-btn,
+button.save-btn,
+label.load-btn {
+  /* font-size: 1.3em; */
   color: white;
   min-width: unset;
   border-radius: 4px;
-  padding: 2px 4px;
+  /* padding: 4px; */
+  block-size: 1.5em;
 }
 
-button.save-btn:hover {
+button.download-btn {
+  border-radius: 50%;
+  background-color: #5a7087;
+  /* padding: 4px 4px; */
+}
+
+button.download-btn svg,
+button.save-btn svg,
+label.load-btn svg {
+  font-size: 1em;
+}
+
+button.save-btn:hover,
+label.load-btn:hover {
   background-color: #5a7087;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+span.download-progress {
+  position: absolute;
 }

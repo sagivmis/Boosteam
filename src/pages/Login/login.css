@@ -1,0 +1,39 @@
+.login-container {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  inline-size: 30%;
+  padding: 1em;
+  border: 1px solid #5a7087;
+  border-radius: 4px;
+}
+
+.login-input-row {
+  display: flex;
+  flex-direction: row;
+  inline-size: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3em;
+}
+
+div.login-input-container {
+  flex: 100;
+
+  max-inline-size: 66%;
+}
+
+.login-label {
+  /* flex: 1; */
+}
+
+div.login-input {
+  color: white;
+}

@@ -26,6 +26,8 @@ interface IPlayersContext {
   getPlayerById: (playerId: string) => TeamPlayer | undefined;
   handleAssignTeam: (playerId: string, teamId: TeamID) => void;
   handleSelectPlayer: (playerId: string) => void;
+  handleRemoveTeamSelection: (playerId: string) => void;
+  handleResetPlayer: (playerId: string) => void;
 }
 
 const defaultPlayersContext: IPlayersContext = {
@@ -41,12 +43,15 @@ const defaultPlayersContext: IPlayersContext = {
   },
   handleAssignTeam: () => {},
   handleSelectPlayer: () => {},
+  handleRemoveTeamSelection: () => {},
+  handleResetPlayer: () => {},
 };
 
 const PlayersContext = createContext<IPlayersContext>(defaultPlayersContext);
 
 export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
-  const { maxPlayers, minDpsPlayers, minSupportPlayers } = useSettingsContext();
+  const { maxPlayers, minDpsPlayers, minSupportPlayers, syncSwaps } =
+    useSettingsContext();
 
   const [players, setPlayers] = useState<TeamPlayer[]>([]);
   const [teams, setTeams] = useState<Teams>([]);
@@ -59,9 +64,14 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setTeams(
-      createTeams(players, { maxPlayers, minDpsPlayers, minSupportPlayers })
+      createTeams(players, {
+        maxPlayers,
+        minDpsPlayers,
+        minSupportPlayers,
+        syncSwaps,
+      })
     );
-  }, [players, minDpsPlayers, maxPlayers, minSupportPlayers]);
+  }, [players, minDpsPlayers, maxPlayers, minSupportPlayers, syncSwaps]);
 
   const handleSelectPlayer = (playerId: string) =>
     setSelectedPlayerId(playerId);
@@ -100,6 +110,20 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
     );
   };
 
+  const handleRemoveTeamSelection = (playerId: string) => {
+    setPlayers((prevPlayers) =>
+      prevPlayers.map((player) =>
+        player.id === playerId
+          ? { ...player, assignedTeamId: undefined }
+          : player
+      )
+    );
+  };
+
+  const handleResetPlayer = (playerId: string) => {
+    handleRemoveTeamSelection(playerId);
+  };
+
   const getPlayerById = (playerId: string) => {
     return players.find((player) => player.id === playerId);
   };
@@ -116,6 +140,8 @@ export const PlayersProvider: React.FC<ProviderProps> = ({ children }) => {
       handleAssignTeam,
       handleSelectPlayer,
       selectedPlayerId,
+      handleRemoveTeamSelection,
+      handleResetPlayer,
     }),
     [players, handleAddPlayer, handleRemovePlayers]
   );

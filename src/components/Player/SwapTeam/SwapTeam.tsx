@@ -48,7 +48,14 @@ const SwapTeam = (props: ISwapTeam) => {
           ))}
         </Select>
         <DialogActions className="swap-team-actions">
-          <Button onClick={() => handleSwapTeam(selectedTeamId)}>OK</Button>
+          <Button
+            onClick={() => {
+              handleSwapTeam(selectedTeamId);
+              handleClose();
+            }}
+          >
+            OK
+          </Button>
         </DialogActions>
       </div>
     </Dialog>
