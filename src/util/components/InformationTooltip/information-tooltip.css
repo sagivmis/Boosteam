@@ -1,0 +1,13 @@
+.information-lines {
+  display: flex;
+  flex-direction: column;
+}
+
+svg.info-icon {
+  /* fill: ; */
+  fill: #ccc;
+}
+
+span.line {
+  font-size: 13px;
+}

@@ -15,34 +15,24 @@ div.settings-container {
 
 .setting-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1em;
-  block-size: 3em;
+  /* gap: 1em; */
+  /* block-size: 3em; */
   inline-size: 40%;
   position: relative;
+  /* padding-block-end: 1em; */
 }
 
 .settings-list {
+  block-size: 100%;
   inline-size: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-}
-
-h4.setting-title {
-  font-size: 1em;
-  display: flex;
-  margin: 0;
-
-  position: absolute;
-  left: 0em;
-  top: -1em;
-  padding: 6px 0px;
-  color: #ffe478;
 }
 
 h4.total-teams {
@@ -82,6 +72,7 @@ label.load-btn svg {
   font-size: 1em;
 }
 
+button.download-btn:hover,
 button.save-btn:hover,
 label.load-btn:hover {
   background-color: #5a7087;
@@ -134,4 +125,31 @@ button.download-btn.error:hover {
   filter: brightness(1.05);
   background-color: #e74c3c;
   transition: all 0.2s ease-out;
+}
+
+h4.setting-title {
+  font-size: 1em;
+  display: flex;
+  margin: 0;
+
+  /* position: absolute; */
+  left: 0em;
+  top: -1em;
+  padding: 6px 0px;
+  color: #ffe478;
+}
+
+.setting-title-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+  justify-content: flex-start;
+  inline-size: 100%;
+}
+
+div.tooltip-container {
+  font-family: "Righteous", sans-serif !important;
+  font-size: 13px;
+  background-color: #5a7087;
 }

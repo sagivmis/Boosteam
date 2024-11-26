@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import "./app.css";
 import AllPlayers from "../AllPlayers";
 import { flash } from "../../assets";
-import { Button, createTheme, IconButton, ThemeProvider } from "@mui/material";
+import {
+  Button,
+  createTheme,
+  IconButton,
+  ThemeProvider,
+  Tooltip,
+} from "@mui/material";
 import clsx from "clsx";
 import { Settings as SettingsIcon } from "@mui/icons-material";
 import Settings from "../Settings";
@@ -90,9 +96,14 @@ const Home = () => {
         </Button>
       )}
 
-      <Button className="header-btn settings-btn" onClick={handleOpenSettings}>
-        <SettingsIcon />
-      </Button>
+      <Tooltip title="SETTINGS" classes={{ tooltip: "tooltip-container" }}>
+        <Button
+          className="header-btn settings-btn"
+          onClick={handleOpenSettings}
+        >
+          <SettingsIcon />
+        </Button>
+      </Tooltip>
       <div className="logo-container">
         <h3 className="logo">Boossteam</h3>
         <img src={flash} alt="flash" className="flash-icon" />

@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./settings.css";
@@ -31,6 +32,7 @@ import { useUtilContext } from "../../providers/UtilProvider";
 import More from "@mui/icons-material/MoreVert";
 import { Close } from "@mui/icons-material";
 import clsx from "clsx";
+import InformationTooltip from "../../util/components/InformationTooltip";
 
 interface ISettings {
   open: boolean;
@@ -92,6 +94,7 @@ const Settings = (props: ISettings) => {
           callback: genMinDisabledSelections,
           length: calcMinMaxPlayers(minDpsPlayers, minSupportPlayers),
         },
+        info: ["Maximum players allowed in a single team"],
       },
       {
         label: "min support players",
@@ -102,6 +105,7 @@ const Settings = (props: ISettings) => {
           callback: genMaxDisabledSelections,
           length: maxPlayers - minDpsPlayers,
         },
+        info: ["Minimum Support players required for a single team"],
       },
       {
         label: "min dps players",
@@ -112,12 +116,17 @@ const Settings = (props: ISettings) => {
           callback: genMaxDisabledSelections,
           length: maxPlayers - minSupportPlayers,
         },
+        info: ["Minimum DPS players required for a single team"],
       },
       {
         label: "sync swaps",
         selectedSetting: minDpsPlayers,
         set: handleChangeMinDpsPlayers,
         variant: "checkbox",
+        info: [
+          "If enabled, will consider the swaps while keeping team requirements",
+          "If disabled, will fill the teams only after the swapped players are assigned",
+        ],
       },
     ],
     [
@@ -249,7 +258,10 @@ const Settings = (props: ISettings) => {
       <div className="settings-list">
         {settings.map((setting, index) => (
           <div className="setting-container" key={uuid()}>
-            <h4 className="setting-title">{setting.label}</h4>
+            <div className="setting-title-container">
+              <h4 className="setting-title">{setting.label}</h4>
+              <InformationTooltip info={setting.info} />
+            </div>
             {setting.variant === "rating" && (
               <RatingButtonGroup
                 selected={setting.selectedSetting}
@@ -294,10 +306,14 @@ const Settings = (props: ISettings) => {
           </MenuItem>
         </Menu>
         <IconButton className="save-btn" onClick={handleOpenExtraMenu}>
-          <More />
+          <Tooltip title="MENU" classes={{ tooltip: "tooltip-container" }}>
+            <More />
+          </Tooltip>
         </IconButton>
         <IconButton className="save-btn" onClick={handleSaveToServer}>
-          <Save />
+          <Tooltip title="SAVE" classes={{ tooltip: "tooltip-container" }}>
+            <Save />
+          </Tooltip>
         </IconButton>
         {/* <IconButton className="save-btn" onClick={handleSave}>
           <FileDownload />
@@ -306,25 +322,27 @@ const Settings = (props: ISettings) => {
           <Folder />
         </IconButton> */}
 
-        <IconButton
-          className={clsx("download-btn", { error })}
-          onClick={handleDownloadClick}
-        >
-          {error ? (
-            <Close className="download-error-icon" />
-          ) : loadSuccess ? (
-            <Check />
-          ) : (
-            <Cloud />
-          )}
-          {!error && (
-            <CircularProgress
-              variant="determinate"
-              value={loadSuccess ? 100 : 0}
-              className="download-progress"
-            />
-          )}
-        </IconButton>
+        <Tooltip title="LOAD" classes={{ tooltip: "tooltip-container" }}>
+          <IconButton
+            className={clsx("download-btn", { error })}
+            onClick={handleDownloadClick}
+          >
+            {error ? (
+              <Close className="download-error-icon" />
+            ) : loadSuccess ? (
+              <Check />
+            ) : (
+              <Cloud />
+            )}
+            {!error && (
+              <CircularProgress
+                variant="determinate"
+                value={loadSuccess ? 100 : 0}
+                className="download-progress"
+              />
+            )}
+          </IconButton>
+        </Tooltip>
       </div>
 
       <h4 className="total-teams">
@@ -344,6 +362,7 @@ type Setting = {
     callback: (length: number) => number[];
     length: number;
   };
+  info: string[];
 };
 
 export default Settings;
