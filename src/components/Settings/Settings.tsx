@@ -4,11 +4,14 @@ import {
   CircularProgress,
   Dialog,
   IconButton,
+  Menu,
+  MenuItem,
   TextField,
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./settings.css";
 import {
+  baseBackendUrl,
   calcMinMaxPlayers,
   loadTeamsFromFile,
   saveTeamsToFile,
@@ -21,6 +24,13 @@ import Save from "@mui/icons-material/SaveRounded";
 import Folder from "@mui/icons-material/Folder";
 import FileDownload from "@mui/icons-material/FileDownload";
 import Check from "@mui/icons-material/Check";
+import axios from "axios";
+import Cloud from "@mui/icons-material/CloudQueue";
+import Refresh from "@mui/icons-material/Refresh";
+import { useUtilContext } from "../../providers/UtilProvider";
+import More from "@mui/icons-material/MoreVert";
+import { Close } from "@mui/icons-material";
+import clsx from "clsx";
 
 interface ISettings {
   open: boolean;
@@ -31,6 +41,10 @@ const Settings = (props: ISettings) => {
   const { open, onClose } = props;
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [loadSuccess, setLoadSuccess] = useState(false);
+  const [error, setError] = useState<any>();
+  const [extraMenuAnchorEl, setExtraMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
+  const extraMenuOpen = Boolean(extraMenuAnchorEl);
 
   const {
     handleLoadSettings,
@@ -45,6 +59,14 @@ const Settings = (props: ISettings) => {
   } = useSettingsContext();
 
   const { players, teams, handleLoadTeams } = usePlayersContext();
+  const { handleOpenToast } = useUtilContext();
+
+  const handleOpenExtraMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setExtraMenuAnchorEl(event.currentTarget);
+  };
+  const handleCloseExtraMenu = () => {
+    setExtraMenuAnchorEl(null);
+  };
 
   const genMinDisabledSelections = (length: number, reverse = false) => {
     return Array.from(
@@ -119,6 +141,37 @@ const Settings = (props: ISettings) => {
       minSupportPlayers,
       syncSwaps,
     });
+    handleCloseExtraMenu();
+  };
+
+  const loadProgressFromServer = async () => {
+    setError(undefined);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError({ message: "Please log in to load progress" });
+      handleOpenToast("Please log in to load progress", "error");
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${baseBackendUrl}/load-progress`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const {
+        players: loadedPlayers,
+        teams: loadedTeams,
+        settings: loadedSettings,
+      } = response.data;
+
+      handleLoadTeams(loadedPlayers, loadedTeams);
+      handleLoadSettings(loadedSettings);
+    } catch (error) {
+      console.error("Error loading progress:", error);
+      handleOpenToast("Failed to load progress", "error");
+    }
   };
 
   const handleLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,11 +179,12 @@ const Settings = (props: ISettings) => {
     if (file) {
       loadTeamsFromFile(file, (data) => {
         handleLoadTeams(data.players, data.teams);
-        console.log(data.settings);
         handleLoadSettings(data.settings);
         onClose();
       });
     }
+
+    handleCloseExtraMenu();
   };
 
   const totalTeams = useMemo(
@@ -141,15 +195,41 @@ const Settings = (props: ISettings) => {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const handleDownloadClick = () => {
-    if (!downloadLoading) {
-      setLoadSuccess(false);
-      setDownloadLoading(true);
+    setLoadSuccess(false);
+    setDownloadLoading(true);
 
-      // fetch the data from the server and load it into the app
-      timer.current = setTimeout(() => {
-        setLoadSuccess(true);
-        setDownloadLoading(false);
-      }, 2000);
+    // fetch the data from the server and load it into the app
+    loadProgressFromServer().then(() => {
+      setLoadSuccess(true);
+      setDownloadLoading(false);
+    });
+  };
+
+  const handleSaveToServer = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      handleOpenToast("Please log in to save progress", "error");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `${baseBackendUrl}/save-progress`,
+        {
+          players,
+          teams,
+          settings: { maxPlayers, minDpsPlayers, minSupportPlayers, syncSwaps },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      handleOpenToast("Progress saved to server successfully", "success");
+    } catch (error) {
+      console.error("Error saving progress:", error);
+      handleOpenToast("Failed to save progress", "error");
     }
   };
 
@@ -192,20 +272,55 @@ const Settings = (props: ISettings) => {
         ))}
       </div>
       <div className="settings-actions-container">
-        <IconButton className="save-btn" onClick={handleSave}>
+        <Menu
+          id="basic-menu"
+          anchorEl={extraMenuAnchorEl}
+          open={extraMenuOpen}
+          onClose={handleCloseExtraMenu}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={handleSave} className="menu-row">
+            <span className="menu-row-label">Save as...</span>
+            <FileDownload className="menu-icon" />
+          </MenuItem>
+          <MenuItem className="menu-row">
+            <input hidden id="file-upload" type="file" onChange={handleLoad} />
+            <label htmlFor="file-upload" className="menu-row-label">
+              <span className="menu-row-label">Load</span>
+              <Folder className="menu-icon" />
+            </label>
+          </MenuItem>
+        </Menu>
+        <IconButton className="save-btn" onClick={handleOpenExtraMenu}>
+          <More />
+        </IconButton>
+        <IconButton className="save-btn" onClick={handleSaveToServer}>
           <Save />
         </IconButton>
-        <IconButton className="load-btn" component="label">
+        {/* <IconButton className="save-btn" onClick={handleSave}>
+          <FileDownload />
+        </IconButton> */}
+        {/* <IconButton className="load-btn" component="label">
           <Folder />
-          <input hidden type="file" onChange={handleLoad} />
-        </IconButton>
+        </IconButton> */}
 
-        <IconButton className="download-btn" onClick={handleDownloadClick}>
-          {loadSuccess ? <Check /> : <FileDownload />}
-          {!loadSuccess && (
+        <IconButton
+          className={clsx("download-btn", { error })}
+          onClick={handleDownloadClick}
+        >
+          {error ? (
+            <Close className="download-error-icon" />
+          ) : loadSuccess ? (
+            <Check />
+          ) : (
+            <Cloud />
+          )}
+          {!error && (
             <CircularProgress
               variant="determinate"
-              value={100}
+              value={loadSuccess ? 100 : 0}
               className="download-progress"
             />
           )}

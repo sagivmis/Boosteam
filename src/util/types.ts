@@ -33,3 +33,5 @@ export type SettingsData = {
   minDpsPlayers: number;
   syncSwaps: boolean;
 };
+
+export type ToastVariant = "success" | "error" | "info";

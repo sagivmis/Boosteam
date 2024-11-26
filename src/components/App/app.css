@@ -35,6 +35,31 @@ button {
   font-style: normal;
   text-transform: uppercase;
 }
+
+.response-message-container {
+  margin-block-start: 1em;
+  inline-size: 30%;
+  block-size: 1.5em;
+  background-color: white;
+  padding-inline: 1em;
+  border-radius: 50px;
+}
+.error-message {
+  color: #e74c3c;
+}
+
+.success-message {
+  color: #2ecc71;
+}
+
+div.toast-container.error {
+  background-color: #e74c3c;
+}
+
+div.toast-container.success {
+  background-color: #2ecc71;
+}
+
 .app-container {
   width: calc(100%);
 
@@ -204,12 +229,38 @@ button.back-btn {
   top: 1%;
 }
 
-.greeting-header {
+.user-management {
   position: absolute;
   left: 0em;
   z-index: 1;
-  font-size: 1.2em;
   top: -2.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+button.logout-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.8em;
+}
+
+svg.logout-icon {
+  font-size: 1.5em;
+}
+
+button.logout-btn:hover,
+button.logout-btn:hover svg.logout-icon {
+  color: #5a7087;
+  transition: all 0.3s ease-in;
+}
+
+.greeting-header {
+  font-size: 1.2em;
 }
 
 @keyframes expandY {

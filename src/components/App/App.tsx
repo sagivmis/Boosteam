@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./app.css";
 import AllPlayers from "../AllPlayers";
 import { flash } from "../../assets";
-import { Button, createTheme, ThemeProvider } from "@mui/material";
+import { Button, createTheme, IconButton, ThemeProvider } from "@mui/material";
 import clsx from "clsx";
 import { Settings as SettingsIcon } from "@mui/icons-material";
 import Settings from "../Settings";
@@ -19,6 +19,8 @@ import {
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
 import { useSettingsContext } from "../../providers/SettingsProvider/SettingsProvider";
+import Power from "@mui/icons-material/PowerSettingsNew";
+import UtilProvider from "../../providers/UtilProvider";
 
 const theme = createTheme({
   palette: {
@@ -38,18 +40,21 @@ const theme = createTheme({
 
 // also insert some of reqs in there like min and max players per teasm, min support\dps players,
 function App() {
+  useEffect(() => () => localStorage.clear(), []);
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <SettingsProvider>
-          <PlayersProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </PlayersProvider>
-        </SettingsProvider>
+        <UtilProvider>
+          <SettingsProvider>
+            <PlayersProvider>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </PlayersProvider>
+          </SettingsProvider>
+        </UtilProvider>
       </ThemeProvider>
     </Router>
   );
@@ -59,7 +64,7 @@ const Home = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const { loggedIn, username } = useSettingsContext();
+  const { loggedIn, username, handleLogout: onLogout } = useSettingsContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -73,10 +78,17 @@ const Home = () => {
 
   const handleStopGenerating = () => setIsGenerating(false);
 
-  console.log(location);
+  const handleLogout = () => {
+    onLogout();
+  };
   return (
     <div className="app-container">
       <Settings open={isSettingsOpen} onClose={handleCloseSettings} />
+      {isGenerating && (
+        <Button className="header-btn back-btn" onClick={handleStopGenerating}>
+          <Back />
+        </Button>
+      )}
 
       <Button className="header-btn settings-btn" onClick={handleOpenSettings}>
         <SettingsIcon />
@@ -86,7 +98,15 @@ const Home = () => {
         <img src={flash} alt="flash" className="flash-icon" />
       </div>
       <div className="team-maker-container">
-        {loggedIn && <h2 className="greeting-header">Hello {username}</h2>}
+        {loggedIn && (
+          <div className="user-management">
+            <h2 className="greeting-header">Hello {username}</h2>
+            <IconButton className="logout-btn" onClick={handleLogout}>
+              <span className="logout-label">logout</span>
+              <Power className="logout-icon" />
+            </IconButton>
+          </div>
+        )}
 
         {!loggedIn && (
           <div className="login-register-container">

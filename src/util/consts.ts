@@ -6,6 +6,7 @@ import {
   TeamPlayer,
 } from "./types";
 
+export const baseBackendUrl = "https://boosteam-backend.vercel.app";
 export const tiers: PlayerTier[] = ["S", "A", "B", "C", "D"];
 export const tiersOrder: Record<PlayerTier | PlayerTierDecimal, number> = {
   S: 5,

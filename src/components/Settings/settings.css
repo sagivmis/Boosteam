@@ -76,12 +76,6 @@ label.load-btn {
   block-size: 1.5em;
 }
 
-button.download-btn {
-  border-radius: 50%;
-  background-color: #5a7087;
-  /* padding: 4px 4px; */
-}
-
 button.download-btn svg,
 button.save-btn svg,
 label.load-btn svg {
@@ -99,4 +93,45 @@ label.load-btn:hover {
 
 span.download-progress {
   position: absolute;
+}
+
+li.menu-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  inline-size: 100%;
+  color: #34495e;
+  gap: 1em;
+}
+
+.menu-row-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  inline-size: 100%;
+  gap: 1em;
+}
+
+svg.menu-icon {
+  color: #34495e;
+}
+
+svg.download-error-icon {
+  /* color: #e74c3c; */
+  /* background-color: #e74c3c; */
+}
+
+button.download-btn {
+  border-radius: 50%;
+  /* padding: 4px 4px; */
+}
+
+button.download-btn.error {
+  background-color: #e74c3c;
+}
+
+button.download-btn.error:hover {
+  filter: brightness(1.05);
+  background-color: #e74c3c;
+  transition: all 0.2s ease-out;
 }

@@ -52,6 +52,7 @@ export const SettingsProvider: React.FC<ProviderProps> = ({ children }) => {
 
   const handleLogout = () => {
     setLoggedIn(false);
+    localStorage.removeItem("token");
   };
 
   const handleChangeMaxPlayers = (value: number) => setMaxPlayers(value);
