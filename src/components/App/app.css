@@ -84,7 +84,7 @@ div.toast-container.success {
   position: relative;
   padding-block: 0.25em;
   padding-inline: 0.25em;
-  block-size: calc(80% - 0.5em);
+  block-size: calc(87% - 0.5em);
   inline-size: calc(100% - 0.5em);
   width: 100%;
   display: flex;
@@ -94,8 +94,7 @@ div.toast-container.success {
 
 .logo-container {
   position: relative;
-  /* width: 700px; */
-  /* block-size: 10%; */
+  block-size: 10%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -104,38 +103,21 @@ div.toast-container.success {
 
 h3.logo {
   margin: 0;
-  /* block-size: 20%; */
   font-size: 2.75em;
   letter-spacing: 0.065em;
-  /* color: white; */
-  /* margin: 0 0 0.5em 0; */
 }
 
 .flash-icon {
   position: absolute;
   width: 45px;
-  left: 55px;
-  /* top: 0; */
-}
-
-@media only screen and (min-width: 768px) {
-  h3.logo {
-    font-size: 4em;
-    margin: 0;
-  }
-
-  .flash-icon {
-    position: absolute;
-    width: 75px;
-    left: 215px;
-  }
+  left: 85px;
 }
 
 .players-input-container {
   position: relative;
   background-color: #34495e;
   inline-size: 100%;
-  block-size: 80%;
+  block-size: 85%;
   display: flex;
   flex-direction: row;
   gap: 0.1em;
@@ -173,8 +155,8 @@ button.full-width-btn {
   position: relative;
   align-self: center;
   border: 1px solid #5a7087;
-  block-size: 20%;
-  inline-size: 20%;
+  block-size: 15%;
+  inline-size: 30%;
   border-radius: 4px;
   margin: 0;
 
@@ -289,6 +271,23 @@ button.logout-btn:hover svg.logout-icon {
 
 .greeting-header {
   font-size: 1.2em;
+}
+
+@media only screen and (min-width: 768px) {
+  h3.logo {
+    font-size: 4em;
+    margin: 0;
+  }
+
+  .flash-icon {
+    position: absolute;
+    width: 75px;
+    left: 115px;
+  }
+  .team-maker-container div.players-input-small {
+    block-size: 20%;
+    inline-size: 20%;
+  }
 }
 
 @keyframes expandY {
