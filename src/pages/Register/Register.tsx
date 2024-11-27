@@ -77,7 +77,9 @@ const Register = () => {
           />
         </div>
 
-        <button onClick={handleRegister}>Register</button>
+        <Button variant="contained" onClick={handleRegister}>
+          Register
+        </Button>
       </div>
 
       <div className="response-message-container">

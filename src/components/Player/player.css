@@ -4,15 +4,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  block-size: 6.75em;
-  inline-size: 5.35em;
+
+  block-size: 3.65em;
+  inline-size: 2.65em;
+  /* font-size: 1em; */
 
   padding: 0.5em 1em;
   background-color: #5a7087;
   cursor: pointer;
   transition: filter 0.2s ease-in;
 }
-
 .player-container:hover {
   filter: brightness(1.085);
   transition: filter 0.2s ease-out;
@@ -39,29 +40,21 @@
 
   inline-size: 0;
   block-size: 0em;
-  /* left: -0.5em;
-  bottom: 100%;
-  
-  inline-size: 0;
-  block-size: calc(100% - 0.2em); */
 
   opacity: 0;
 
   padding-inline: 0.25em;
   padding-block: 0.1em;
-  /* background-color: #798b9e; */
   background-color: rgba(121, 139, 158, 0.5);
   z-index: 5;
 }
 
 .player-toolbar-container.clicked {
-  /* left: -1.5em; */
   block-size: 2em;
   visibility: visible;
   inline-size: calc(100% - 0.5em);
   bottom: 0%;
   opacity: 1;
-  /* inline-size: 1em; */
   transition: left 0.3s 0.15s, block-size 0.3s 0.15s, inline-size, opacity 0.6s;
 }
 
@@ -120,6 +113,7 @@ span.player-checkbox {
 }
 
 .player-name {
+  font-size: 0.7em;
   z-index: 5;
   color: white;
 }
@@ -135,4 +129,15 @@ button.toolbar-btn:hover {
 
 svg.toolbar-icon {
   font-size: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .player-container {
+    block-size: 6.75em;
+    inline-size: 5.35em;
+  }
+
+  .player-name {
+    font-size: 1em;
+  }
 }

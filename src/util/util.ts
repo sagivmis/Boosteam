@@ -51,7 +51,6 @@ export const createTeams = (
     const team: TeamPlayer[] = generatedTeams[teamId];
 
     // Add DPS players
-    // let dpsCount = 0;
     let dpsCount = syncSwaps ? team.filter((p) => p.role === "dps").length : 0;
     for (const player of dpsPlayers) {
       if (availablePlayers.includes(player) && dpsCount < minDpsPlayers) {
@@ -66,7 +65,6 @@ export const createTeams = (
     }
 
     // Add Support players
-    // let supportCount = 0;
     let supportCount = syncSwaps
       ? team.filter((p) => p.role === "support").length
       : 0;

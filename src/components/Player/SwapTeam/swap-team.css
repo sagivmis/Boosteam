@@ -1,14 +1,7 @@
 div.swap-team-container {
-  /* max-width: unset; */
   padding: 1em;
   inline-size: 50%;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.05);
-  /* 6px 6px 5px 1px rgba(0, 0, 0, 0.025), -6px -6px 5px 1px rgba(0, 0, 0, 0.025); */
-  /* 12px 12px 5px 1px rgba(0, 0, 0, 0.025); */
-  /* 12px 12px 5px 1px rgba(0, 0, 0, 0.025); */
-  /* -12px -12px 5px 1px rgba(0, 0, 0, 0.025); */
-  /* -12px 12px 5px 1px rgba(0, 0, 0, 0.025); */
-  /* 12px -12px 5px 1px rgba(0, 0, 0, 0.025); */
 }
 
 div.swap-team-actions {

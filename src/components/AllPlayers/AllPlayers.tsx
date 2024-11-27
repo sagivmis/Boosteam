@@ -92,7 +92,6 @@ const AllPlayers = () => {
     <div className="players-input-container">
       <div className="add-player-container players-input">
         <h5 className="tab-header">Team Selection</h5>
-        {/* <FormControl className="team-selection-form"> */}
         <div className="team-selection-header">
           <Button
             className="add-player-btn  full-width-btn"
@@ -160,7 +159,6 @@ const AllPlayers = () => {
                   select: "role-select-view",
                   nativeInput: "ss",
                 }}
-                // sx={{ borderColor: "none" }}
               >
                 {roles.map((role) => (
                   <MenuItem
@@ -214,7 +212,6 @@ const AllPlayers = () => {
             </div>
           </div>
         </div>
-        {/* </FormControl> */}
       </div>
     </div>
   );

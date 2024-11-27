@@ -9,7 +9,7 @@
 .login {
   display: flex;
   flex-direction: column;
-  inline-size: 30%;
+  inline-size: 70%;
   padding: 1em;
   border: 1px solid #5a7087;
   border-radius: 4px;
@@ -27,13 +27,20 @@
 div.login-input-container {
   flex: 100;
 
-  max-inline-size: 66%;
+  max-inline-size: 60%;
 }
 
 .login-label {
-  /* flex: 1; */
+  inline-size: 40%;
+  text-align: left;
 }
 
 div.login-input {
   color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  .login {
+    inline-size: 30%;
+  }
 }

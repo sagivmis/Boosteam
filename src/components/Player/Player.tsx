@@ -94,7 +94,6 @@ const Player = (props: IPlayer) => {
             label={`${parseInt(player.assignedTeamId.toString()) + 1}`}
             className="selected-team-chip-container"
             classes={{ label: "selected-team-label" }}
-            // color={tierByRoleColorMapping[player.role][player.tier] as any}
           />
         ) : undefined}
         <Chip

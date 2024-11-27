@@ -20,7 +20,6 @@ const DeletePlayer = (props: IDeletePlayer) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   return (
-    // <div className="delete-player-container">
     <Dialog
       hideBackdrop
       className="delete-player-dialog-container"
@@ -46,7 +45,6 @@ const DeletePlayer = (props: IDeletePlayer) => {
         </Button>
       </DialogActions>
     </Dialog>
-    // </div>
   );
 };
 

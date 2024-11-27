@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 
 #root {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   text-align: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100svw;
+  height: 100svh;
   display: flex;
 
   background-color: #2c3e50;
@@ -38,12 +38,19 @@ button {
 
 .response-message-container {
   margin-block-start: 1em;
-  inline-size: 30%;
+  inline-size: 70%;
   block-size: 1.5em;
   background-color: white;
   padding-inline: 1em;
   border-radius: 50px;
 }
+
+@media only screen and (min-width: 768px) {
+  .response-message-container {
+    inline-size: 30%;
+  }
+}
+
 .error-message {
   color: #e74c3c;
 }
@@ -61,53 +68,74 @@ div.toast-container.success {
 }
 
 .app-container {
-  width: calc(100%);
+  block-size: calc(100% - 2em);
+  inline-size: calc(100% - 2em);
 
   padding-inline: 1em;
   padding-block: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #34495e;
+  justify-content: space-between;
 }
 
 .team-maker-container {
   position: relative;
-  background-color: #34495e;
   padding-block: 0.25em;
   padding-inline: 0.25em;
-  block-size: 100%;
-  inline-size: 100%;
+  block-size: calc(80% - 0.5em);
+  inline-size: calc(100% - 0.5em);
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
 }
 
-h3.logo {
-  font-size: 4em;
-}
-
-.flash-icon {
-  position: absolute;
-  width: 75px;
-  left: 215px;
-}
-
 .logo-container {
   position: relative;
-  width: 700px;
-  block-size: 10%;
+  /* width: 700px; */
+  /* block-size: 10%; */
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
 
+h3.logo {
+  margin: 0;
+  /* block-size: 20%; */
+  font-size: 2.75em;
+  letter-spacing: 0.065em;
+  /* color: white; */
+  /* margin: 0 0 0.5em 0; */
+}
+
+.flash-icon {
+  position: absolute;
+  width: 45px;
+  left: 55px;
+  /* top: 0; */
+}
+
+@media only screen and (min-width: 768px) {
+  h3.logo {
+    font-size: 4em;
+    margin: 0;
+  }
+
+  .flash-icon {
+    position: absolute;
+    width: 75px;
+    left: 215px;
+  }
+}
+
 .players-input-container {
   position: relative;
   background-color: #34495e;
   inline-size: 100%;
-  block-size: 100%;
+  block-size: 80%;
   display: flex;
   flex-direction: row;
   gap: 0.1em;
@@ -167,7 +195,6 @@ button.full-width-btn {
   bottom: 0;
   block-size: 100%;
   inline-size: 100%;
-  /* animation: expandY 0.5s forwards, expandX 0.5s ease-out 0.5s forwards; */
 }
 
 img.flash-icon-generate-btn {
@@ -207,6 +234,7 @@ button.register-btn {
   flex-direction: row;
   gap: 0.5em;
   z-index: 1;
+  block-size: 5%;
 }
 
 button.header-btn:hover,

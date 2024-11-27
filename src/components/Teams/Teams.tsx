@@ -31,17 +31,11 @@ const Teams = () => {
   const [swapTeamOpen, setSwapTeamOpen] = useState(false);
 
   const handleScreenshot = useCallback(async () => {
-    // takeScreenshot().then(() => handleCopyImage());
     if (teamsRef.current) {
       domToImage.toPng(teamsRef.current, { quality: 1 }).then((dataUrl) => {
-        // const imgData = canvas.toDataURL("image/png");
         console.log(dataUrl);
         copyImg(dataUrl);
       });
-      // const link = document.createElement("a");
-      // link.href = imgData;
-      // link.download = "screenshot.png";
-      // link.click();
     }
   }, []);
 
@@ -76,10 +70,6 @@ const Teams = () => {
   const handleClickPlayer = (playerId: string) => {
     handleSelectPlayer(playerId);
   };
-
-  // useEffect(() => {
-  //   handleCopyImage();
-  // }, [image]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowTeams(true), 700);

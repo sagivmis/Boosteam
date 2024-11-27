@@ -9,8 +9,7 @@ import { baseBackendUrl, sleep, ToastVariant } from "../../util";
 import { useUtilContext } from "../../providers/UtilProvider";
 
 const Login = () => {
-  // add a state from app (router base) to see when the login was successful and the
-  // ask to fetch the saved data or continue working
+  // after login ask if to fetch data
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string>();
@@ -41,7 +40,7 @@ const Login = () => {
       newToast("Login successful", "success");
       await sleep(0.3);
 
-      navigate("/"); // Redirect to home page after successful login
+      navigate("/");
     } catch (error: any) {
       setError(error);
       console.error("Error logging in:", error);
@@ -84,7 +83,9 @@ const Login = () => {
           />
         </div>
 
-        <button onClick={handleLoginClick}>Login</button>
+        <Button variant="contained" onClick={handleLoginClick}>
+          Login
+        </Button>
       </div>
       <div className="response-message-container">
         {message && (

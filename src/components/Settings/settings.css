@@ -1,7 +1,7 @@
 div.settings-container {
   max-width: unset;
-  inline-size: 60%;
-  block-size: 20%;
+  inline-size: 75%;
+  block-size: 70%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -13,26 +13,28 @@ div.settings-container {
   padding-inline: 1em;
 }
 
+.settings-list {
+  block-size: 100%;
+  inline-size: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+div.setting-container .rating-button-group-container {
+  inline-size: 100%;
+}
+
 .setting-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* gap: 1em; */
-  /* block-size: 3em; */
   inline-size: 40%;
   position: relative;
-  /* padding-block-end: 1em; */
-}
-
-.settings-list {
-  block-size: 100%;
-  inline-size: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
 }
 
 h4.total-teams {
@@ -51,18 +53,15 @@ h4.total-teams {
   flex-direction: row-reverse;
   justify-content: center;
   align-items: center;
-  /* block-size: 3em; */
   gap: 0.3em;
 }
 
 button.download-btn,
 button.save-btn,
 label.load-btn {
-  /* font-size: 1.3em; */
   color: white;
   min-width: unset;
   border-radius: 4px;
-  /* padding: 4px; */
   block-size: 1.5em;
 }
 
@@ -108,13 +107,10 @@ svg.menu-icon {
 }
 
 svg.download-error-icon {
-  /* color: #e74c3c; */
-  /* background-color: #e74c3c; */
 }
 
 button.download-btn {
   border-radius: 50%;
-  /* padding: 4px 4px; */
 }
 
 button.download-btn.error {
@@ -132,7 +128,6 @@ h4.setting-title {
   display: flex;
   margin: 0;
 
-  /* position: absolute; */
   left: 0em;
   top: -1em;
   padding: 6px 0px;
@@ -152,4 +147,17 @@ div.tooltip-container {
   font-family: "Righteous", sans-serif !important;
   font-size: 13px;
   background-color: #5a7087;
+}
+
+@media only screen and (min-width: 768px) {
+  div.settings-container {
+    inline-size: 60%;
+    block-size: 20%;
+  }
+
+  .settings-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 }

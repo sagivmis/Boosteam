@@ -207,7 +207,6 @@ const Settings = (props: ISettings) => {
     setLoadSuccess(false);
     setDownloadLoading(true);
 
-    // fetch the data from the server and load it into the app
     loadProgressFromServer().then(() => {
       setLoadSuccess(true);
       setDownloadLoading(false);
@@ -315,12 +314,6 @@ const Settings = (props: ISettings) => {
             <Save />
           </Tooltip>
         </IconButton>
-        {/* <IconButton className="save-btn" onClick={handleSave}>
-          <FileDownload />
-        </IconButton> */}
-        {/* <IconButton className="load-btn" component="label">
-          <Folder />
-        </IconButton> */}
 
         <Tooltip title="LOAD" classes={{ tooltip: "tooltip-container" }}>
           <IconButton

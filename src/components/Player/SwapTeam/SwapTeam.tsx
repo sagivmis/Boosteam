@@ -24,7 +24,6 @@ const SwapTeam = (props: ISwapTeam) => {
 
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  //   useOnClickOutside(dialogRef, () => handleClose());
   return (
     <Dialog
       hideBackdrop
