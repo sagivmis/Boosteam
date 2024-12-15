@@ -39,6 +39,21 @@ div.login-input {
   color: white;
 }
 
+div.fetch-modal-content-container {
+  block-size: 50%;
+}
+
+.fetch-modal-text-container {
+  display: flex;
+  flex-direction: column;
+
+  block-size: 100%;
+  justify-content: space-between;
+}
+
+div.fetch-modal-paper-container {
+  block-size: 25%;
+}
 @media only screen and (min-width: 768px) {
   .login {
     inline-size: 30%;

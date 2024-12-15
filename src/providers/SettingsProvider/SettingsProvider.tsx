@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
-import { ProviderProps, SettingsData } from "../../util";
+import { ProviderProps, SettingsData, User } from "../../util";
 
 interface ISettingsContext {
   maxPlayers: number;
@@ -7,8 +7,8 @@ interface ISettingsContext {
   minDpsPlayers: number;
   syncSwaps: boolean;
   loggedIn: boolean;
-  username: string;
-  handleLogin: (username: string) => void;
+  user: User | undefined;
+  handleLogin: (user: User) => void;
   handleLogout: () => void;
   handleChangeMaxPlayers: (value: number) => void;
   handleChangeMinSupportPlayers: (value: number) => void;
@@ -23,7 +23,7 @@ const defaultSettingsContext: ISettingsContext = {
   minDpsPlayers: 0,
   syncSwaps: false,
   loggedIn: false,
-  username: "",
+  user: { password: "", username: "" },
   handleLogin: () => {},
   handleLogout: () => {},
   handleChangeMaxPlayers: () => {},
@@ -43,11 +43,11 @@ export const SettingsProvider: React.FC<ProviderProps> = ({ children }) => {
   // should change after an hour ( since the auth token only last an hour ) and
   // the prompt to the user that he has logged out
   const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
+  const [user, setUser] = useState<User>();
 
-  const handleLogin = (username: string) => {
+  const handleLogin = (user: User) => {
     setLoggedIn(true);
-    setUsername(username);
+    setUser(user);
   };
 
   const handleLogout = () => {
@@ -75,7 +75,7 @@ export const SettingsProvider: React.FC<ProviderProps> = ({ children }) => {
       minDpsPlayers,
       syncSwaps,
       loggedIn,
-      username,
+      user,
       handleLogin,
       handleLogout,
       handleChangeSyncSwaps,

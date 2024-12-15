@@ -31,7 +31,7 @@ const Register = () => {
         username,
         password,
       });
-      console.log(response.data.message);
+
       handleServerResponse("User registered successfully!", "success");
       navigate("/");
     } catch (error: any) {

@@ -70,7 +70,7 @@ const Home = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const { loggedIn, username, handleLogout: onLogout } = useSettingsContext();
+  const { loggedIn, user, handleLogout: onLogout } = useSettingsContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -109,9 +109,9 @@ const Home = () => {
         <img src={flash} alt="flash" className="flash-icon" />
       </div>
       <div className="team-maker-container">
-        {loggedIn && (
+        {loggedIn && user && (
           <div className="user-management">
-            <h2 className="greeting-header">Hello {username}</h2>
+            <h2 className="greeting-header">Hello {user.username}</h2>
             <IconButton className="logout-btn" onClick={handleLogout}>
               <span className="logout-label">logout</span>
               <Power className="logout-icon" />

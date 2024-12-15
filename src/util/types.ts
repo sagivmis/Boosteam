@@ -35,3 +35,19 @@ export type SettingsData = {
 };
 
 export type ToastVariant = "success" | "error" | "info";
+
+export type User = {
+  username: string;
+  password: string;
+  players?: TeamPlayer[];
+  teams?: Record<number, TeamPlayer[]>;
+  settings?: {
+    maxPlayers: number;
+    minDpsPlayers: number;
+    minSupportPlayers: number;
+  };
+};
+export type LoginResponse = {
+  token: string;
+  user: User;
+};

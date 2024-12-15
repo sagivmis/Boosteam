@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import "./login.css";
 import { useSettingsContext } from "../../providers/SettingsProvider/SettingsProvider";
 import Back from "@mui/icons-material/ArrowBackRounded";
-import { baseBackendUrl, sleep, ToastVariant } from "../../util";
+import { baseBackendUrl, LoginResponse, sleep, ToastVariant } from "../../util";
 import { useUtilContext } from "../../providers/UtilProvider";
+import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
+import { Close } from "@mui/icons-material";
 
 const Login = () => {
   // after login ask if to fetch data
@@ -15,9 +26,13 @@ const Login = () => {
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState();
 
+  const [isFetchModalOpen, setIsFetchModalOpen] = useState(false);
+  const [fetchProgress, setFetchProgress] = useState(false);
+
   const navigate = useNavigate();
 
-  const { handleLogin } = useSettingsContext();
+  const { handleLogin, user } = useSettingsContext();
+  const { handleLoadTeams } = usePlayersContext();
   const { handleOpenToast } = useUtilContext();
 
   const newToast = (newMessage: string, variant?: ToastVariant) => {
@@ -30,17 +45,24 @@ const Login = () => {
     setMessage("");
 
     try {
-      const response = await axios.post(`${baseBackendUrl}/login`, {
-        username,
-        password,
-      });
+      const response = await axios.post<LoginResponse>(
+        `${baseBackendUrl}/login`,
+        {
+          username,
+          password,
+        }
+      );
 
       localStorage.setItem("token", response.data.token);
-      handleLogin(username);
+      handleLogin(response.data.user);
       newToast("Login successful", "success");
       await sleep(0.3);
 
-      navigate("/");
+      if (response.data.user.players) {
+        setIsFetchModalOpen(true);
+      } else {
+        navigate("/");
+      }
     } catch (error: any) {
       setError(error);
       console.error("Error logging in:", error);
@@ -48,6 +70,22 @@ const Login = () => {
     }
   };
 
+  const handleCloseFetchModal = () => {
+    setIsFetchModalOpen(false);
+  };
+
+  const handleFetchProgress = () => {
+    if (user && user.players && user.teams) {
+      handleLoadTeams(user.players, user.teams);
+
+      navigate("/");
+    }
+  };
+
+  const handleCancelFetchProgress = () => {
+    handleCloseFetchModal();
+    navigate("/");
+  };
   return (
     <div className="login-container">
       <Button
@@ -58,6 +96,30 @@ const Login = () => {
       >
         <Back />
       </Button>
+
+      <Dialog
+        classes={{ paper: "fetch-modal-paper-container" }}
+        open={isFetchModalOpen}
+        onClose={handleCloseFetchModal}
+      >
+        <DialogTitle>{"Use saved progress?"}</DialogTitle>
+        <DialogContent className="fetch-modal-content-container">
+          <DialogContentText className="fetch-modal-text-container">
+            Would you like to fetch your saved progress from the server?
+            <span className="bold small-text">
+              NOTE: This will overwrite your current work
+            </span>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <IconButton onClick={handleCancelFetchProgress}>
+            <Close />
+          </IconButton>
+          <Button onClick={handleFetchProgress} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <h2>Login</h2>
       <div className="login">

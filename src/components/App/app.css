@@ -273,6 +273,14 @@ button.logout-btn:hover svg.logout-icon {
   font-size: 1.2em;
 }
 
+.bold {
+  font-weight: 600;
+}
+
+.small-text {
+  font-size: 10px;
+}
+
 @media only screen and (min-width: 768px) {
   h3.logo {
     font-size: 4em;
