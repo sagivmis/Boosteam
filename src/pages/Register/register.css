@@ -13,15 +13,29 @@
   padding: 1em;
   border: 1px solid #5a7087;
   border-radius: 4px;
+
+  gap: 1em;
 }
 
 .register-input-row {
   display: flex;
   flex-direction: row;
-  inline-size: 100%;
+  inline-size: calc(100% - 2em);
   justify-content: space-between;
   align-items: center;
   gap: 3em;
+  padding: 1em;
+  border: 1px solid transparent;
+}
+
+.register-input-row.error {
+  border: 1px solid var(--alert);
+  transition: border 1s ease;
+}
+
+.register-input-row.error .register-label {
+  color: var(--alert);
+  transition: var(--alert-transit-in);
 }
 
 div.register-input-container {
@@ -33,10 +47,23 @@ div.register-input-container {
 .register-label {
   inline-size: 40%;
   text-align: left;
+  transition: var(--alert-transit-out);
+  margin: 0;
 }
 
 div.register-input {
   color: white;
+}
+
+.password-error {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.register-input-container.Mui-error .register-input {
+  border-bottom-color: #f44336;
 }
 
 @media only screen and (min-width: 768px) {

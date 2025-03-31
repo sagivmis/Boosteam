@@ -26,7 +26,11 @@ div.team-selection-form {
   gap: 0.25em;
 }
 
-input.name-input {
+input.name-input,
+input.name-input:-webkit-autofill,
+input.name-input:-webkit-autofill:hover,
+input.name-input:-webkit-autofill:focus,
+input.name-input:-webkit-autofill:active {
   padding: 0;
   padding-inline: 0.5em;
   padding-block: 0.25em;

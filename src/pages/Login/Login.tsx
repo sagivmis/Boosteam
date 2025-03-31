@@ -35,7 +35,7 @@ const Login = () => {
   const { handleLoadTeams } = usePlayersContext();
   const { handleOpenToast } = useUtilContext();
 
-  const newToast = (newMessage: string, variant?: ToastVariant) => {
+  const handleServerResponse = (newMessage: string, variant?: ToastVariant) => {
     handleOpenToast(newMessage, variant);
     setMessage(newMessage);
   };
@@ -55,7 +55,7 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.token);
       handleLogin(response.data.user);
-      newToast("Login successful", "success");
+      handleServerResponse("Login successful", "success");
       await sleep(0.3);
 
       if (response.data.user.players) {
@@ -65,8 +65,22 @@ const Login = () => {
       }
     } catch (error: any) {
       setError(error);
+
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          handleServerResponse(
+            "No Server Response, Please try again later",
+            "error"
+          );
+        } else if (error.response.status === 401) {
+          handleServerResponse("Incorrect Username / Password", "error");
+        } else if (error.response.status === 500) {
+          handleServerResponse("Server error", "error");
+        }
+      }
+
       console.error("Error logging in:", error);
-      newToast("Failed to log in", "error");
+      handleServerResponse("Failed to log in", "error");
     }
   };
 

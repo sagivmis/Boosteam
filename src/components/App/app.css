@@ -10,6 +10,13 @@
   background-color: #2c3e50;
   font-family: "Righteous", sans-serif !important;
   color: #5a7087;
+
+  --background: #2c3e50;
+  --text: #5a7087;
+  --alert: #d32f2f;
+
+  --alert-transit-in: color 0.2s ease-in;
+  --alert-transit-out: color 0.5s ease-out;
 }
 
 h1,
@@ -34,6 +41,32 @@ button {
   font-weight: 400;
   font-style: normal;
   text-transform: uppercase;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  /* background-color: var(--background); */
+  -webkit-box-shadow: 0 0 0 50em var(--background) inset !important;
+  -webkit-text-fill-color: white !important; /* Match your text color */
+  transition: background-color 5000s ease-in-out 0s; /* Make the background stay longer */
+  padding: 4px 0 5px;
+
+  border-radius: 0 !important; /* Remove any border radius */
+  background-clip: content-box !important; /* Clip the background to the content box */
+}
+
+svg,
+svg.MuiSvgIcon-root {
+  color: var(--text);
+  transition: var(--alert-transit-in) !important;
+}
+
+svg.error,
+.Mui-error svg.MuiSvgIcon-root {
+  color: var(--alert);
+  transition: var(--alert-transit-out) !important;
 }
 
 .response-message-container {
