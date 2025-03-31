@@ -42,7 +42,6 @@ const Register = () => {
     return "";
   };
 
-  // Handle field blur event
   const handleBlur = (field: "username" | "password") => {
     setTouched({ ...touched, [field]: true });
 

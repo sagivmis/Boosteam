@@ -9,7 +9,10 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  InputAdornment,
+  InputBase,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import "./login.css";
 import { useSettingsContext } from "../../providers/SettingsProvider/SettingsProvider";
@@ -17,10 +20,16 @@ import Back from "@mui/icons-material/ArrowBackRounded";
 import { baseBackendUrl, LoginResponse, sleep, ToastVariant } from "../../util";
 import { useUtilContext } from "../../providers/UtilProvider";
 import { usePlayersContext } from "../../providers/PlayersProvider/PlayersProvider";
-import { Close } from "@mui/icons-material";
+import { Close, Info } from "@mui/icons-material";
+import clsx from "clsx";
 
 const Login = () => {
-  // after login ask if to fetch data
+  const navigate = useNavigate();
+
+  const { handleLogin, user } = useSettingsContext();
+  const { handleLoadTeams } = usePlayersContext();
+  const { handleOpenToast } = useUtilContext();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string>();
@@ -28,12 +37,12 @@ const Login = () => {
 
   const [isFetchModalOpen, setIsFetchModalOpen] = useState(false);
   const [fetchProgress, setFetchProgress] = useState(false);
-
-  const navigate = useNavigate();
-
-  const { handleLogin, user } = useSettingsContext();
-  const { handleLoadTeams } = usePlayersContext();
-  const { handleOpenToast } = useUtilContext();
+  // Validation states
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [touched, setTouched] = useState({
+    username: false,
+    password: false,
+  });
 
   const handleServerResponse = (newMessage: string, variant?: ToastVariant) => {
     handleOpenToast(newMessage, variant);
@@ -96,10 +105,36 @@ const Login = () => {
     }
   };
 
+  const validatePassword = (value: string): string => {
+    if (value.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    return "";
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Only show errors if the field has been touched
+    if (touched.password) {
+      setPasswordError(validatePassword(newPassword));
+    }
+  };
+
   const handleCancelFetchProgress = () => {
     handleCloseFetchModal();
     navigate("/");
   };
+
+  const handleBlur = (field: "username" | "password") => {
+    setTouched({ ...touched, [field]: true });
+
+    if (field === "password") {
+      setPasswordError(validatePassword(password));
+    }
+  };
+
   return (
     <div className="login-container">
       <Button
@@ -137,7 +172,7 @@ const Login = () => {
 
       <h2>Login</h2>
       <div className="login">
-        <div className="login-input-row">
+        <div className={clsx("login-input-row")}>
           <h4 className="login-label">username</h4>
           <TextField
             classes={{ root: "login-input-container" }}
@@ -145,17 +180,46 @@ const Login = () => {
             variant="standard"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            slots={{
+              input: InputBase,
+            }}
           />
         </div>
-        <div className="login-input-row">
+        <div className={clsx("login-input-row", { error: passwordError })}>
           <h4 className="login-label">password</h4>
           <TextField
             classes={{ root: "login-input-container" }}
-            slotProps={{ input: { className: "login-input" } }}
-            variant="standard"
+            slotProps={{
+              input: {
+                className: "login-input",
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip
+                      title="Password must be at least 8 characters long"
+                      arrow
+                    >
+                      <IconButton
+                        edge="end"
+                        size="small"
+                        color={passwordError ? "error" : "default"}
+                      >
+                        <Info fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              },
+            }}
             type="password"
+            variant="standard"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
+            onBlur={() => handleBlur("password")}
+            error={touched.password && !!passwordError}
+            fullWidth
+            slots={{
+              input: InputBase,
+            }}
           />
         </div>
 
