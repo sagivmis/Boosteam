@@ -101,7 +101,7 @@ const Register = () => {
     setMessage("");
 
     try {
-      const response = await axios.post(`${baseBackendUrl}/register`, {
+      const response = await axios.post(`${baseBackendUrl}/api/auth/register`, {
         email,
         username,
         password,
