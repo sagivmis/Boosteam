@@ -50,11 +50,11 @@ const Register = () => {
         const remain = value.split("@")[1];
         if (!remain.includes(".")) {
           return "Please use correct email format";
-        }else {
-          const domain = remain.split(".")[0]
-          const suffix = remain.split(".")[1]
+        } else {
+          const domain = remain.split(".")[0];
+          const suffix = remain.split(".")[1];
 
-          if (domain.length > 1 && suffix.length > 1)
+          // if (domain.length > 1 && suffix.length > 1)
         }
       }
     }
@@ -101,7 +101,7 @@ const Register = () => {
     setMessage("");
 
     try {
-      const response = await axios.post(`${baseBackendUrl}/api/auth/register`, {
+      const response = await axios.post(`${baseBackendUrl}/register`, {
         email,
         username,
         password,
