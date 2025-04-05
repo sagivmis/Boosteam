@@ -55,7 +55,7 @@ const Login = () => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        `${baseBackendUrl}/login`,
+        `${baseBackendUrl}/api/auth/login`,
         {
           username,
           password,

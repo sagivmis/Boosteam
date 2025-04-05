@@ -23,30 +23,52 @@ const Register = () => {
   const { handleOpenToast } = useUtilContext();
 
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState<Error>();
 
   // Validation states
   const [passwordError, setPasswordError] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
   const [touched, setTouched] = useState({
     username: false,
     password: false,
+    email: false,
   });
 
   // Password validation function
-  const validatePassword = (value: string): string => {
-    if (value.length < 8) {
-      return "Password must be at least 8 characters long";
+  const validate = (value: string, source: "password" | "email"): string => {
+    if (source === "password") {
+      if (value.length < 8) {
+        return "Password must be at least 8 characters long";
+      }
+    } else if (source === "email") {
+      if (!value.includes("@")) {
+        return "Please use correct email format";
+      } else {
+        const remain = value.split("@")[1];
+        if (!remain.includes(".")) {
+          return "Please use correct email format";
+        }else {
+          const domain = remain.split(".")[0]
+          const suffix = remain.split(".")[1]
+
+          if (domain.length > 1 && suffix.length > 1)
+        }
+      }
     }
     return "";
   };
 
-  const handleBlur = (field: "username" | "password") => {
+  const handleBlur = (field: "username" | "password" | "email") => {
     setTouched({ ...touched, [field]: true });
 
     if (field === "password") {
-      setPasswordError(validatePassword(password));
+      setPasswordError(validate(password, "password"));
+    }
+    if (field === "email") {
+      setEmailError(validate(email, "email"));
     }
   };
 
@@ -62,16 +84,25 @@ const Register = () => {
 
     // Only show errors if the field has been touched
     if (touched.password) {
-      setPasswordError(validatePassword(newPassword));
+      setPasswordError(validate(newPassword, "password"));
     }
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    if (touched.email) {
+      setEmailError(validate(newEmail, "email"));
+    }
+  };
   const handleRegister = async () => {
     setError(undefined);
     setMessage("");
 
     try {
-      const response = await axios.post(`${baseBackendUrl}/register`, {
+      const response = await axios.post(`${baseBackendUrl}/api/auth/register`, {
+        email,
         username,
         password,
       });
@@ -112,6 +143,52 @@ const Register = () => {
       </Button>
       <h2>Register</h2>
       <div className="register">
+        <div className={clsx("register-input-row", { error: emailError })}>
+          <h4 className="register-label">email</h4>
+          <TextField
+            classes={{ root: "register-input-container" }}
+            variant="standard"
+            value={email}
+            onBlur={() => handleBlur("email")}
+            onChange={handleEmailChange}
+            error={touched.email && !!emailError}
+            slots={{
+              input: InputBase,
+            }}
+            slotProps={{
+              input: {
+                className: "register-input",
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip
+                      title={
+                        <div className="email-tooltip">
+                          <span>Please use correct email format</span>
+                          <span
+                            style={{
+                              alignSelf: "flex-end",
+                            }}
+                          >
+                            i.e example@boosteam.com
+                          </span>
+                        </div>
+                      }
+                      arrow
+                    >
+                      <IconButton
+                        edge="end"
+                        size="small"
+                        color={passwordError ? "error" : "default"}
+                      >
+                        <Info fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </div>
         <div className="register-input-row">
           <h4 className="register-label">username</h4>
           <TextField
@@ -173,7 +250,11 @@ const Register = () => {
           )} */}
         </div>
 
-        <Button variant="contained" onClick={handleRegister}>
+        <Button
+          disabled={!!emailError || !!passwordError}
+          variant="contained"
+          onClick={handleRegister}
+        >
           Register
         </Button>
       </div>

@@ -55,6 +55,10 @@ div.register-input {
   color: white;
 }
 
+.email-tooltip {
+  display: flex;
+  flex-direction: column;
+}
 .password-error {
   margin-top: 4px;
   display: flex;
